@@ -8,13 +8,19 @@ public class Wallet {
 	
 	private PublicKey address = null;
 	private PrivateKey sKey = null;
-	private double total_input = 0d;
-	private double total_output = 0d;
-	private double balance = 0d;
-	private double inputTransactions = 0d;
-	private double outputTransactions = 0d;
+	private double total_input = 0;
+	private double total_output = 0;
+	private double balance = 0;
+	private double inputTransactions = 0;
+	private double outputTransactions = 0;
 	
 	/* Getters y Setters */
+	
+	public void generateKeyPair() {
+		KeyPair keys = GenSig.generateKeyPair();
+		address = keys.getPublic();
+		sKey = keys.getPrivate();
+	}
 	
 	public PublicKey getAddress() {
 		return this.address;
@@ -32,13 +38,11 @@ public class Wallet {
 		this.sKey = sKey;
 	}
 	
-	/* Logica */
-	
-	public void generateKeyPair() {
-		KeyPair keys = GenSig.generateKeyPair();
-		address = keys.getPublic();
-		sKey = keys.getPrivate();
+	public String toString() {
+		return "\n" + "Wallet = " + getAddress().hashCode() +
+				"\n" + "Total input = " + total_input +
+				"\n" + "Total output = " + total_output +
+				"\n" + "Balance = " + balance + "\n";
+				
 	}
-	
-	
 }
