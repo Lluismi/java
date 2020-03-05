@@ -45,4 +45,8 @@ public class Wallet {
 				"\n" + "Balance = " + balance + "\n";
 				
 	}
+
+	public void loadCoins(BlockChain bChain) {
+		
+	}
 }
