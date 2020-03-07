@@ -1,7 +1,9 @@
 package PigCoin;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BlockChain {
 
@@ -10,6 +12,12 @@ public class BlockChain {
 	/* Constructor */ 
 	
 	public BlockChain() {}
+	
+	/* Getter */
+	
+	List<Transaction> getblockChain() {
+		return this.blockChain;
+	}
 	
 	/* Lógica */
 	
@@ -26,4 +34,11 @@ public class BlockChain {
 	public void summarize(int position) {
 		System.out.println(blockChain.get(position).toString());
 	}
+	
+    public List<Transaction> loadInputTransactions(PublicKey address) {  
+        List<Transaction> inputTransactions = getblockChain().stream()
+            .filter(transaction -> transaction.getpKey_recipient().equals(address))
+            .collect(Collectors.toCollection(ArrayList<Transaction>::new));
+        return inputTransactions;
+    }
 }
