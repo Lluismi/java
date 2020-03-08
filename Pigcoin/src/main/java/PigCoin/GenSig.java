@@ -1,3 +1,4 @@
+/* Clase heredada del tutor */
 package PigCoin;
 
 import java.security.KeyPair;
