@@ -48,4 +48,22 @@ public class BlockChain {
     			.collect(Collectors.toCollection(ArrayList<Transaction>::new));
     	return outputTransactions;
     }
+    
+    public double[] loadWallet(PublicKey address) {
+    	
+        double pigCoinsIn = 0d;
+        double pigCoinsOut = 0d;
+
+        for (Transaction transaction : getblockChain()) {
+
+            if (address.equals(transaction.getpKey_recipient())) {
+                pigCoinsIn = pigCoinsIn + transaction.getPigcoins();
+            }
+            if (address.equals(transaction.getpKey_sender())) {
+                pigCoinsOut = pigCoinsOut + transaction.getPigcoins();
+            }
+        }
+        double[] pigCoinsInOut = {pigCoinsIn, pigCoinsOut};
+        return pigCoinsInOut; 
+    }
 }
