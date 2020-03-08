@@ -108,4 +108,12 @@ public class Wallet {
 	public void updateBalance() {
 		this.balance = this.getTotal_input() - this.getTotal_output();
 	}
+	
+	public void loadCoins(BlockChain bChain) {
+		double[] inOut = {0d, 0d};
+		inOut = bChain.loadWallet(getAddress());
+		setTotal_Input(inOut[0]);
+		setTotal_Output(inOut[1]);
+        updateBalance();
+	}
 }
