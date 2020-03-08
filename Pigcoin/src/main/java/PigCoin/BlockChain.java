@@ -41,4 +41,11 @@ public class BlockChain {
             .collect(Collectors.toCollection(ArrayList<Transaction>::new));
         return inputTransactions;
     }
+    
+    public List<Transaction> loadOutputTransactions(PublicKey address) {
+    	List<Transaction> outputTransactions = getblockChain().stream()
+    			.filter(transaction -> transaction.getpKey_sender().equals(address))
+    			.collect(Collectors.toCollection(ArrayList<Transaction>::new));
+    	return outputTransactions;
+    }
 }
