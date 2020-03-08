@@ -1,3 +1,5 @@
+/* Clase heredada del tutor */
+
 package BiciPalma;
 
 public class BiciPalma {

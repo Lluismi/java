@@ -1,3 +1,4 @@
+/* Clase heredada del tutor */
 package Enzilium;
 
 import java.security.KeyPair;

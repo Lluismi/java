@@ -1,3 +1,5 @@
+/* Clase heredada del tutor */
+
 package cotxox;
 
 import java.util.ArrayList;
