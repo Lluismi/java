@@ -11,7 +11,7 @@ public class BlockChain {
 	
 	/* Constructor */ 
 	
-	public BlockChain() {}
+	public BlockChain() {};
 	
 	/* Getter */
 	
@@ -19,26 +19,27 @@ public class BlockChain {
 		return this.blockChain;
 	}
 	
-	/* Lógica */
+	/* Lï¿½gica */
 	
 	public void addOrigin(Transaction transaction) {
-		blockChain.add(transaction);
+		this.getblockChain().add(transaction);
 	}
 
 	public void summarize() {
 		for (Transaction transaction : blockChain) {
-			System.out.println(transaction);
+			System.out.println(transaction.toString());
 		}
 	}
 	
 	public void summarize(int position) {
-		System.out.println(blockChain.get(position).toString());
+		System.out.println(getblockChain().get(position).toString());
 	}
 	
     public List<Transaction> loadInputTransactions(PublicKey address) {  
         List<Transaction> inputTransactions = getblockChain().stream()
             .filter(transaction -> transaction.getpKey_recipient().equals(address))
             .collect(Collectors.toCollection(ArrayList<Transaction>::new));
+        
         return inputTransactions;
     }
     
@@ -46,6 +47,7 @@ public class BlockChain {
     	List<Transaction> outputTransactions = getblockChain().stream()
     			.filter(transaction -> transaction.getpKey_sender().equals(address))
     			.collect(Collectors.toCollection(ArrayList<Transaction>::new));
+    	
     	return outputTransactions;
     }
     
