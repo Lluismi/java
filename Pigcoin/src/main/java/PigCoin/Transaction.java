@@ -4,8 +4,8 @@ import java.security.PublicKey;
 
 public class Transaction {
 	
-	private String hash = "";
-	private String prev_hash = "";
+	private String hash = null;
+	private String prev_hash = null;
 	private PublicKey pKey_sender = null;
 	private PublicKey pKey_recipient = null;
 	private double pigcoins = 0;
@@ -27,7 +27,7 @@ public class Transaction {
 	/* Getters y Setters */
 
 	public String getHash() {
-		return hash;
+		return this.hash;
 	}
 	
 	public void setHash(String hash) {
@@ -35,7 +35,7 @@ public class Transaction {
 	}
 	
 	public String getPrev_hash() {
-		return prev_hash;
+		return this.prev_hash;
 	}
 	
 	public void setPrev_hash(String prev_hash) {
@@ -43,7 +43,7 @@ public class Transaction {
 	}
 
 	public PublicKey getpKey_sender() {
-		return pKey_sender;
+		return this.pKey_sender;
 	}
 
 	public void setpKey_sender(PublicKey pKey_sender) {
@@ -51,7 +51,7 @@ public class Transaction {
 	}
 
 	public PublicKey getpKey_recipient() {
-		return pKey_recipient;
+		return this.pKey_recipient;
 	}
 
 	public void setpKey_recipient(PublicKey pKey_recipient) {
@@ -59,7 +59,7 @@ public class Transaction {
 	}
 
 	public double getPigcoins() {
-		return pigcoins;
+		return this.pigcoins;
 	}
 
 	public void setPigcoins(double pigcoins) {
@@ -67,20 +67,20 @@ public class Transaction {
 	}
 
 	public String getMessage() {
-		return message;
+		return this.message;
 	}
 
 	public void setMessage(String message) {
 		this.message = message;
 	}
 	
+	@Override
 	public String toString() {
-		return "\n" + "hash = " + getHash() +
-				"\n" + "prev_hash = " + getPrev_hash() +
+		return "\n" + "hash = " + this.hash +
+				"\n" + "prev_hash = " + this.prev_hash +
 				"\n" + "pKey_sender = " + getpKey_sender().hashCode() +
 				"\n" + "pKey_recipient = " + getpKey_recipient().hashCode() + 
 				"\n" + "pigcoins = " + getPigcoins() + 
 				"\n" + "message = " + getMessage();
-		
 	}
 }
