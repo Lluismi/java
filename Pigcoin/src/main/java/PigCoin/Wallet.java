@@ -13,9 +13,13 @@ public class Wallet {
 	private double total_input = 0d;
 	private double total_output = 0d;
 	private double balance = 0d;
-	private List<Transaction> inputTransactions = new ArrayList<Transaction>();
-	private List<Transaction> outputTransactions = new ArrayList<Transaction>();
+	private List<Transaction> inputTransactions = null;
+	private List<Transaction> outputTransactions = null;
 	
+    /* Constructor */
+
+    public Wallet() {};
+    
 	/* Getters y Setters */
 	
     public void setSK(PrivateKey sKey) {
@@ -70,7 +74,7 @@ public class Wallet {
 		return this.inputTransactions;
 	}
 	
-	/* Lógica */
+	/* Lï¿½gica */
 	
 	
 	public void generateKeyPair() {
@@ -79,30 +83,20 @@ public class Wallet {
 		sKey = keys.getPrivate();
 	}
 	
+	@Override
 	public String toString() {
 		return "\n" + "Wallet = " + getAddress().hashCode() +
-				"\n" + "Total input = " + total_input +
-				"\n" + "Total output = " + total_output +
-				"\n" + "Balance = " + balance + "\n";
-				
+				"\n" + "Total input = " + getTotal_input() +
+				"\n" + "Total output = " + getTotal_output() +
+				"\n" + "Balance = " + getBalance() + "\n";	
 	}
 	
-	public double loadInputTransactions(BlockChain bChain) {
-		double inPut = 0d;
-		inPut = bChain.getblockChain().stream()
-				.filter(transaction -> transaction.getpKey_recipient().equals(getAddress()))
-				.map(transaction -> transaction.getPigcoins())
-				.reduce(inPut, (accumulator, item) -> accumulator + item);
-		return inPut;
+	public void loadInputTransactions(BlockChain bChain) {
+        setInputTransactions(bChain.loadInputTransactions(getAddress()));
 	}
 	
-	public double loadOutputTransactions(BlockChain bChain) {
-		double inPut = 0d;
-		inPut = bChain.getblockChain().stream()
-				.filter(transaction -> transaction.getpKey_recipient().equals(getAddress()))
-				.map(transaction -> transaction.getPigcoins())
-				.reduce(inPut, (accumulator, item) -> accumulator + item);
-		return inPut;
+	public void loadOutputTransactions(BlockChain bChain) {
+        setOutputTransactions(bChain.loadOutputTransactions(getAddress()));
 	}
 	
 	public void updateBalance() {
