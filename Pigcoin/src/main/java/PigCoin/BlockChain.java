@@ -74,6 +74,8 @@ public class BlockChain {
         return GenSig.verify(address, message, signedTransaction);
     }
     
+    /* Sirve para obtener el hash previo de la transaccion anterior */
+    
     private String getprevhash(String hash){
         for (Transaction transaction : getblockChain()){
             if(transaction.getHash() == hash){
@@ -82,6 +84,11 @@ public class BlockChain {
         }
         return null;
     }
+    
+    /* Sirve para crear una transacción,
+     * hacemos un bucle que recorra el hash del valor de las monedas cosumidas,
+     * hacemos una nueva transacciones y cogemos el blockchain para agregarle la nueva transacción
+     *  */
     
     public void createTransaction(PublicKey pKey_sender, PublicKey pKey_recipient, Map<String, Double> consumedCoins, String message, byte[] signedTransaction) {
     	
