@@ -4,7 +4,11 @@ import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Wallet {
 	
@@ -110,4 +114,77 @@ public class Wallet {
 		setTotal_Output(inOut[1]);
         updateBalance();
 	}
+
+    public Map<String, Double> collectCoins(double pigcoins) {
+        
+    	
+        Map<String, Double> collectedCoins = new LinkedHashMap<>();
+
+        if (getInputTransactions() == null) {
+            return null;
+        }
+
+        if (pigcoins > getBalance()) {
+            return null;
+        }
+
+        Double achievedCoins = 0d;
+        
+        /* Declaramos una variable local
+         * si no es igual a null entra en el for
+         * recorriendo las transacciones del output
+         * añadiendo las monedas consumidas a la variable HashSet
+         * luego entra en otro for donde comprueba las transacciones Input
+         * si contiene monedas continua, si el usuario tiene los pigcoins
+         * suficientes se envian al destinatario 
+         * */
+        
+        Set<String> consumedCoins = new HashSet<>();
+        if (getOutputTransactions() != null) {
+            for (Transaction transaction : getOutputTransactions()) {
+                consumedCoins.add(transaction.getPrev_hash());
+            }   
+        }             
+
+        for (Transaction transaction : getInputTransactions()) {
+
+            if (consumedCoins.contains(transaction.getHash())) {
+                continue;
+            }
+
+            if (transaction.getPigcoins() == pigcoins) {
+                collectedCoins.put(transaction.getHash(), transaction.getPigcoins());
+                consumedCoins.add(transaction.getHash());
+                break;
+                
+            /* Si el usuario no tiene una transacciones con los pigcoins que pide
+             * busca un inputtransactions  mayor que lo que pide y envia 2 transacciones
+             * una con lo que le envias al otro usuario
+             * y otra con lo que te queda a ti
+             * */
+                
+            } else if (transaction.getPigcoins() > pigcoins) {
+                collectedCoins.put(transaction.getHash(), pigcoins);
+                collectedCoins.put("CA_" + transaction.getHash(), transaction.getPigcoins() - pigcoins);
+                consumedCoins.add(transaction.getHash());
+                break;
+                
+            /* Este else es para que el usuario no pueda utilizar 2 veces la misma transacción
+             * y el blockchain lo bloqueará 
+             * */ 
+            } else {
+                collectedCoins.put(transaction.getHash(), transaction.getPigcoins());
+                achievedCoins = transaction.getPigcoins();
+                pigcoins = pigcoins - achievedCoins;
+                consumedCoins.add(transaction.getHash());
+            }
+
+        }
+        return collectedCoins;
+    }
+
+    public byte[] signTransaction(String message) {
+        return GenSig.sign(getSKey(), message);
+    }
+ 
 }
