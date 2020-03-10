@@ -70,6 +70,8 @@ public class BlockChain {
         return pigCoinsInOut; 
     }
     
+    /* Comprueba si la firma es valida */
+    
     public boolean isSignatureValid(PublicKey address, String message, byte[] signedTransaction) {
         return GenSig.verify(address, message, signedTransaction);
     }
@@ -90,12 +92,34 @@ public class BlockChain {
      * hacemos una nueva transacciones y cogemos el blockchain para agregarle la nueva transacción
      *  */
     
-    public void createTransaction(PublicKey pKey_sender, PublicKey pKey_recipient, Map<String, Double> consumedCoins, String message, byte[] signedTransaction) {
-    	
-    	for (String hash : consumedCoins.keySet()) {
-    		Transaction transaction = new Transaction(hash, getprevhash(hash), pKey_sender, pKey_recipient, consumedCoins.get(hash), message);
-    		getblockChain().add(transaction);
-    	}
+    public void createTransaction(PublicKey address, PublicKey pKey_recipient, Map<String, Double> consumedCoins, String message, byte[] signedTransaction) {
+      
+    	for (String hash : consumedCoins.keySet()){        
+            Transaction trans = new Transaction(hash, getprevhash(hash), address, pKey_recipient, consumedCoins.get(hash), message);
+            getblockChain().add(trans);
+        }
     }
-   
+    
+    /* Si la firma y los coins son validos, crea la transacción */
+    
+    public void processTransactions(PublicKey pKey_sender, PublicKey pKey_recipient, Map<String, Double> consumedCoins, String message, byte[] signedTransaction) {  
+        if (isSignatureValid(pKey_sender, message, signedTransaction) && isConsumedCoinValid(consumedCoins)) {
+            createTransaction(pKey_sender, pKey_recipient, consumedCoins, message, signedTransaction);
+        }
+
+    }
+     
+    /* Comprueba si los coins son validos */
+    
+	private boolean isConsumedCoinValid(Map<String, Double> consumedCoins) {
+		for (String hash : consumedCoins.keySet()) {
+            for (Transaction transaction : blockChain) {
+                if (hash.equals(transaction.getPrev_hash())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+	}
+    
 }
