@@ -188,13 +188,17 @@ public class Wallet {
     public byte[] signTransaction(String message) {
         return GenSig.sign(getSKey(), message);
     }
-    
-    /* Comprueba si la firma es valida,
-     * si lo es crea la transacción */
-    
-	public void sendCoins(PublicKey pKey_recipient, Double coins, String message, BlockChain bChain) {
-		Map<String, Double> consumedCoins = collectCoins(coins);
-        byte[] signedTransaction = signTransaction(message);
-        bChain.processTransactions(getAddress(), pKey_recipient, consumedCoins, message, signedTransaction);
-	}  
+        
+    public void sendCoins(PublicKey pKey_recipient, Double coins, String message, BlockChain bChain) {
+
+        Map<String, Double> consumedCoins = new LinkedHashMap<>();
+        
+        consumedCoins = collectCoins(coins);
+
+        if (consumedCoins != null) {
+            bChain.processTransactions(getAddress(), pKey_recipient, consumedCoins, message, signTransaction(message));
+        }
+        
+        this.loadCoins(bChain);
+    }
 }
