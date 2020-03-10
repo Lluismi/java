@@ -3,6 +3,7 @@ package PigCoin;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class BlockChain {
@@ -68,4 +69,26 @@ public class BlockChain {
         double[] pigCoinsInOut = {pigCoinsIn, pigCoinsOut};
         return pigCoinsInOut; 
     }
+    
+    public boolean isSignatureValid(PublicKey address, String message, byte[] signedTransaction) {
+        return GenSig.verify(address, message, signedTransaction);
+    }
+    
+    private String getprevhash(String hash){
+        for (Transaction transaction : getblockChain()){
+            if(transaction.getHash() == hash){
+                return transaction.getPrev_hash();
+            }
+        }
+        return null;
+    }
+    
+    public void createTransaction(PublicKey pKey_sender, PublicKey pKey_recipient, Map<String, Double> consumedCoins, String message, byte[] signedTransaction) {
+    	
+    	for (String hash : consumedCoins.keySet()) {
+    		Transaction transaction = new Transaction(hash, getprevhash(hash), pKey_sender, pKey_recipient, consumedCoins.get(hash), message);
+    		getblockChain().add(transaction);
+    	}
+    }
+   
 }
