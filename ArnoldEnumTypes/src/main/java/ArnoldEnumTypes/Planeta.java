@@ -15,8 +15,8 @@ public enum Planeta {
 	
 	public static final double G = 6.67400e-11;
 	
-	private double masa = 0f;
-	private double radio = 0f;
+	private double masa = 0d;
+	private double radio = 0d;
 	
 	Planeta(double masa, double radio){
 		this.masa = masa;
@@ -46,6 +46,14 @@ public enum Planeta {
 	
 	public double pesoSuperficie(double peso){
 		return masaHumano(peso) * this.gravedadSuperficial();
+	}
+
+	public static EnumSet<Planeta> getPlanetasTerrestres(){
+		return EnumSet.range(Planeta.MERCURY, Planeta.MARS);
+	}
+	
+	public static EnumSet<Planeta> getGigantesGaseosos(){
+		return EnumSet.complementOf(getPlanetasTerrestres());
 	}
 	
 }
